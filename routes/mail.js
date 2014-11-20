@@ -6,17 +6,17 @@ var nodemailer = require('nodemailer');
 var transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
-        user: 'michael.j.b.perkins@gmail.com',
-        pass: '@bex4980@'
+        user: 'mjbpnoteapp@gmail.com',
+        pass: 'justsendingsnippets'
     }
 });
 
 router.post('/', function(req, res) {
 	var referer = req.headers.referer;
 	var mailOptions = {
-		from: 'Note <michael.j.b.perkins@gmail.com>',
+		from: 'Note <mjbpnoteapp@gmail.com>',
 		to: 'mick@binaryvein.com',
-		subject: 'Snippet sent from Note',
+		subject: 'You have been sent a Note',
 		text: req.body.content + '\n\n' + referer,
 		html: req.body.content + '<br><br>' + referer
 	};
