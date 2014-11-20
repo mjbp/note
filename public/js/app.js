@@ -49,7 +49,10 @@
 			}
 		},
 		download = function () {
-			var blob = new Blob([notepad.innerHTML], {type: "text/plain;charset=utf-8"});
+			var sanitise = function (content) {
+				return content.trim().replace(/<br(\s*)\/*>/ig, '\n').replace(/<[p|div]\s/ig, '\n$0').replace(/(<([^>]+)>)/ig, ""); 
+			},
+			blob = new Blob([sanitise(notepad.innerHTML)], {type: "text/plain;charset=utf-8"});
 			saveAs(blob, 'Note-' + noteID + '.txt');
 		};
 	
