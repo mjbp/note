@@ -13,9 +13,10 @@ var transporter = nodemailer.createTransport({
 
 router.post('/', function(req, res) {
 	var referer = req.headers.referer;
+	
 	var mailOptions = {
 		from: 'Note <mjbpnoteapp@gmail.com>',
-		to: 'mick@binaryvein.com',
+		to: req.body['form-row-email'],
 		subject: 'You have been sent a Note',
 		text: req.body.content + '\n\n' + referer,
 		html: req.body.content + '<br><br>' + referer
@@ -29,7 +30,6 @@ router.post('/', function(req, res) {
 			console.log('Message sent: ' + info.response);
 		}
 	});
-	
 });
 
 module.exports = router;

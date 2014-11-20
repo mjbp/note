@@ -5,6 +5,10 @@ block content
 	img(id='l', src='/img/l.gif')
 	div(id='a', contenteditable)!=content
 	div(class='buttons')
-		button#btn-mail(class='icon icon-send') mail
+		form#form-email(action='/mail', class='form')
+			label(for='form-row-email') Email recipient of this note
+			input(type='email', id='form-row-email', name='form-row-email', placeholder='email address', required)
+			button#btn-email(class='icon icon-send') email
 		button#btn-download(class='icon icon-download') download
+		
 	
