@@ -1,0 +1,23 @@
+* {box-sizing:border-box;margin:0;padding:0;}
+html {height:100%;}
+body {font:18px/27px 'Vollkorn', serif;min-height:100%;padding:60px 0 1% 0;position:relative}
+
+body:before {content: '';display:block;position:absolute;width:4px;top:0;left:60px;bottom:0;border:1px solid;border-color:transparent #efe4e4;}
+#a {background: #fff;background: -webkit-gradient(linear, 0 0, 0 100%, from(#d9eaf3), color-stop(4%, #fff)) 0 4px;background: -webkit-linear-gradient(top, #d9eaf3 0%, #fff 8%) 0 4px;background: -moz-linear-gradient(top, #d9eaf3 0%, #fff 8%) 0 4px;background: -ms-linear-gradient(top, #d9eaf3 0%, #fff 8%) 0 4px;background: -o-linear-gradient(top, #d9eaf3 0%, #fff 8%) 0 4px;background: linear-gradient(top, #d9eaf3 0%, #fff 8%) 0 4px;-webkit-background-size: 100% 27px;-moz-background-size: 100% 27px;-ms-background-size: 100% 27px;-o-background-size: 100% 27px;background-size:100% 27px;text-align:left;padding:12px 6% 5%  70px;min-height:80vh;color:#191919;cursor:pointer;outline:0px solid transparent;}
+#l {position:absolute;top:0px;left:50%;opacity:0;}
+a,
+button {cursor:pointer;font-size: 1em; margin:0 auto;padding:0;background:transparent;text-decoration:none;color:#000;opacity:0.2;}
+a:hover,
+button:hover {opacity:0.35;transition:all 0.2s ease;}
+img {width:10px;display:block;margin:20px auto;opacity:0.2}
+
+.buttons {position:absolute;bottom:0;padding-bottom:20px;left:10px;text-align:center;}
+.icon {display:block;background-color:transparent;border:0 none;background-size: contain;text-indent: 100%;white-space: nowrap;overflow: hidden;width:32px;height:32px;text-align:center;background-position:center;}
+.icon-add {background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M14%2010H2v2h12v-2zm0-4H2v2h12V6zm4%208v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM2%2016h8v-2H2v2z%22/%3E%3C/svg%3E');
+	background-repeat: no-repeat;position:absolute;top:20px;right:3%;
+}
+.icon-download { background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M19%209h-4V3H9v6H5l7%207%207-7zM5%2018v2h14v-2H5z%22/%3E%3C/svg%3E');background-repeat: no-repeat;}
+.icon-send {
+	background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M2.01%2021L23%2012%202.01%203%202%2010l15%202-15%202z%22/%3E%3C/svg%3E');
+	background-repeat: no-repeat;width:80%;height:80%;margin-bottom:10px;
+}
