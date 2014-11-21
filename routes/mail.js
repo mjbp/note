@@ -7,7 +7,7 @@ var transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
         user: 'mjbpnoteapp@gmail.com',
-        pass: 'justsendingsnippets'
+        pass: 'sendingsnippetsfromnote'
     }
 });
 
