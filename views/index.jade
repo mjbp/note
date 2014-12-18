@@ -2,10 +2,9 @@ extends layout
 
 block content
 	a(class='icon icon-add', href='/') new
-	img(id='l', src='/img/l.gif')
-	div(id='a', contenteditable)!=content
+	div(id='note', contenteditable)!=content
 	div(class='buttons')
-		form#form-email(action='/mail', class='form')
+		form#form-email(action='/mail', class='form', tabindex='-1')
 			label(for='form-row-email') Email recipient of this note
 			input(type='email', id='form-row-email', name='form-row-email', placeholder='email address', required)
 			button#btn-email(class='icon icon-send') email
