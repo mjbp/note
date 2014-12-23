@@ -2,7 +2,7 @@ extends layout
 
 block content
 	a(class='icon icon-add', href='/') new
-	div(id='note', contenteditable)!=content
+	div(id='note', contenteditable)
 	div(class='buttons')
 		form#form-email(action='/mail', class='form', tabindex='-1')
 			label(for='form-row-email') Email recipient of this note
@@ -10,4 +10,7 @@ block content
 			button#btn-email(class='icon icon-send') email
 		button#btn-download(class='icon icon-download') download
 		
-	
+	div(class='modal-overlay')
+	div(class='modal')
+		button#btn-local(class='icon icon-local') Load locally saved note
+		button#btn-db(class='icon icon-db') Load note from DB

@@ -2,7 +2,16 @@
 (function (w, d) {
 	'use strict';
 	
-	var UTILS = {
+	
+	/*
+	 1. On load, check if online, unobtrusive alert if not
+	 1.1 If online and the note already exists in localStorage and it's different from the db version, offer to overwrite db version
+	 2. App-ify - full screen, icon/app shortcut
+	
+	*/
+	
+	var note,
+		UTILS = {
 			XHR : function (url, content) {
 				var http = new XMLHttpRequest();
 
@@ -14,6 +23,12 @@
 				http.open('POST', url, true);
 				http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 				http.send(content);
+			},
+			isOnline : function () {
+				return ('onLine' in navigator && !!navigator.onLine);
+			},
+			closeModal : function () {
+				d.body.className.split(' modal-on').join('');
 			},
 			on : function (el, ev, fn) {
 				if (el.addEventListener) {
@@ -44,7 +59,7 @@
 				// This allows you to show to display the string without the browser reading it as HTML.
 				return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 			},
-			insertHTMLCommand : function(doc, html) {
+			insertHTMLCommand : function (doc, html) {
 				var selection,
 					range,
 					el,
@@ -92,11 +107,11 @@
 			.setter('id', w.location.pathname.substring(w.location.pathname.lastIndexOf("/") + 1))
 			.setter('storeName', 'note-' + this.id)
 			.setter('notepad', d.getElementById('note'))
-			.setter('savedNote', this.sanitise.decode(this.notepad.innerHTML))
-			.initListeners()
-			.notepad.focus();
+			.setter('localNote', this.storage.getItem(this.storeName))
+			.loadNote()
+			.initListeners();
 	};
-	
+		
 	Note.prototype.initListeners = function () {
 		var self = this;
 		UTILS.on(d, 'keyup', function (e) {self.keyBinder.up.call(self, e); })
@@ -115,24 +130,10 @@
 
 	Note.prototype.keyBinder = {
 		keyCodes : {
-			//8 : 'backspace',
-			/*9 : {
-				key : 'tab',
-				events : ['keyup']
-			},*/
 			13 : {
 				key : 'enter',
 				events : ['keyup']
-			},
-			86 : {
-				key : 'paste',
-				events : ['keypress']
-			}/*,
-			37 : 'direction',
-			38 : 'direction',
-			39 : 'direction',
-			40 : 'direction',
-			66 : 'bold''*/
+			}
 		},
 		dispatchTable : {
 			enter : function (e) {
@@ -167,10 +168,47 @@
 			}
 		}
 	};
-	//add app.manifest and app features
+	
+	Note.prototype.load = {
+		local : function () {
+			this.notepad.innerHTML = this.localNote;
+		},
+		db : function () {
+			this.notepad.innerHTML = w.n.content;
+		}
+	};
 	
 	Note.prototype.loadNote = function () {
-		this.notepad.innerHTML = this.savedNote;
+		var self = this;
+		if (UTILS.isOnline()) {
+			if (self.localNote === w.n.content) {
+				self.load.local.call(self);
+			} else {
+				d.body.className += ' modal-on';
+				UTILS.on(d.getElementById('btn-local'), 'click', function () {
+					console.log('local');
+					self.load.local.call(self);
+					UTILS.closeModal();
+				})
+					 .on(d.getElementById('btn-db'), 'click', function () {
+					console.log('db');
+						self.load.db.call(self);
+						UTILS.closeModal();
+					});
+			}
+		} else {
+			self.load.local.call(self);
+		}
+		
+		
+		/*
+		 * TO DO
+		 * Buttons on modal
+		 * Test on server with offline/online modal business
+		 *
+		 */
+		
+		
 		
 		return this;
 	};
@@ -183,9 +221,8 @@
 
 		if (w.clipboardData && e.clipboardData === undefined) {//IE
 			e.clipboardData = w.clipboardData;
-			dataFormat= 'Text';
+			dataFormat = 'Text';
 		}
-		console.log('Pasting...');
 
 		if (e.clipboardData && e.clipboardData.getData) {
 			UTILS.preventDefault(e);
@@ -211,28 +248,29 @@
 				d.body.className = d.body.className.split(' app-form-mode').join('');
 			};
 			
-			UTILS.preventDefault(e);
-			e.stopPropagation();
+		UTILS.preventDefault(e);
+		e.stopPropagation();
 			
-			if (~d.body.className.indexOf(' app-form-mode')) {
-				UTILS.XHR('/mail', 'content=' + this.extractText(this.sanitise.decode(this.notepad.innerHTML)) + '&form-row-email=' + encodeURI(field.value));
-				off();
-			} else {
-				d.body.className += ' app-form-mode';
-				field.focus();
-				UTILS.on(d, 'click', off);
-			}
+		if (~d.body.className.indexOf(' app-form-mode')) {
+			UTILS.XHR('/mail', 'content=' + this.extractText(this.sanitise.decode(this.notepad.innerHTML)) + '&form-row-email=' + encodeURI(field.value));
+			off();
+		} else {
+			d.body.className += ' app-form-mode';
+			field.focus();
+			UTILS.on(d, 'click', off);
+		}
 		return this;
 	};
 
 	Note.prototype.extractText = function () {
 		var self = this,
 			extract = function (nodes) {
-				var text = '',
+				var i,
+					text = '',
 					node,
 					flag = false;
 
-				for (var i = 0; i < nodes.length; i++) {
+				for (i = 0; i < nodes.length; i += 1) {
 					node = nodes[i];
 					node.normalize();
 					
@@ -254,10 +292,9 @@
 	};
 
 	Note.prototype.save = function () {
-		this.setter('savedNote', this.sanitise.decode(this.notepad.innerHTML))
-			.storage.setItem(this.storeName, this.savedNote);
-		console.log(this.savedNote);
-		UTILS.XHR('/push' + w.location.pathname, 'content=' + this.savedNote);
+		this.setter('localNote', this.sanitise.decode(this.notepad.innerHTML))
+			.storage.setItem(this.storeName, this.localNote);
+		UTILS.XHR('/push' + w.location.pathname, 'content=' + this.localNote);
 		return this;
 	};
 
@@ -271,19 +308,15 @@
 		addnl : function (content) {
 			return content.trim().replace(/(<\/p>)/g, '\n');
 		},
-		addbr : function (content) {
-			return content.trim().replace(/{{note-break}}/g, '<br>');
-		},
 		decode : function (content) {
-    		var txtrea = d.createElement("textarea");
-    		txtrea.innerHTML = content;
+			var txtrea = d.createElement("textarea");
+			txtrea.innerHTML = content;
 			return txtrea.value;
 		},
 		elements : function (content) {
 			return content.replace(/(<([^>]+)>)/ig, '');
 		}
 	};
+	note = new Note();
 	
-	var note = new Note();
-	
-})(window, document, undefined);
+}(window, document, undefined));
