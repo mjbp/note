@@ -1,4 +1,4 @@
-* {box-sizing:border-box;margin:0;padding:0;}
+* {box-sizing:border-box;margin:0;padding:0;max-width:100%;}
 html {height:100%;}
 body {font:18px/27px 'Vollkorn', serif;min-height:100%;padding:60px 0 1% 0;position:relative}
 
@@ -8,6 +8,8 @@ a,
 button {cursor:pointer;font-size: 1em; margin:0 auto;padding:0;background:transparent;text-decoration:none;color:#000;opacity:0.2;}
 a:hover,
 button:hover {opacity:0.35;transition:all 0.2s ease;}
+a:focus,
+button:focus {opacity:0.2}
 img {width:10px;display:block;margin:20px auto;opacity:0.2}
 
 
@@ -24,7 +26,7 @@ img {width:10px;display:block;margin:20px auto;opacity:0.2}
 
 .form {width:auto;}
 .form label {width:0;height:0;opacity:0;overflow:hidden; position:absolute;}
-#form-row-email {font:16px 'Vollkorn', serif;height:28px;border:0 none;width:0;background:transparent;border:0; float:left;top:-2px;padding:4px 0;transition:width 100ms linear}
+#form-row-email {font:18px 'Vollkorn', serif;height:28px;border:0 none;width:0;background:transparent;border:0; float:left;top:-2px;padding:4px 0;transition:width 100ms linear}
 .app-form-mode #form-row-email {padding:4px 8px;width:200px;}
 
 .modal-on #note,

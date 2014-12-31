@@ -7,6 +7,17 @@
 	 1. On load, check if online, unobtrusive alert if not
 	 1.1 If online and the note already exists in localStorage and it's different from the db version, offer to overwrite db version
 	 2. App-ify - full screen, icon/app shortcut
+	 2.1 style the active state:
+   outline: 0;
+   -webkit-tap-highlight-color: rgba(0,0,0,0);
+   -webkit-tap-highlight-color: transparent;
+   -webkit-touch-callout: none;
+   -webkit-user-select: none;
+      -moz-user-select: none;
+       -ms-user-select: none;
+           user-select: none;
+		  2.2 fullscreen - http://www.html5rocks.com/en/mobile/fullscreen/
+		  
 	
 	*/
 	
@@ -28,7 +39,7 @@
 				return ('onLine' in navigator && !!navigator.onLine);
 			},
 			closeModal : function () {
-				d.body.className.split(' modal-on').join('');
+				d.body.className = d.body.className.split(' modal-on').join('');
 			},
 			on : function (el, ev, fn) {
 				if (el.addEventListener) {
@@ -172,9 +183,11 @@
 	Note.prototype.load = {
 		local : function () {
 			this.notepad.innerHTML = this.localNote;
+			this.save();
 		},
 		db : function () {
 			this.notepad.innerHTML = w.n.content;
+			this.save();
 		}
 	};
 	
@@ -199,17 +212,6 @@
 		} else {
 			self.load.local.call(self);
 		}
-		
-		
-		/*
-		 * TO DO
-		 * Buttons on modal
-		 * Test on server with offline/online modal business
-		 *
-		 */
-		
-		
-		
 		return this;
 	};
 	
