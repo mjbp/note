@@ -2,25 +2,6 @@
 (function (w, d) {
 	'use strict';
 	
-	
-	/*
-	 1. On load, check if online, unobtrusive alert if not
-	 1.1 If online and the note already exists in localStorage and it's different from the db version, offer to overwrite db version
-	 2. App-ify - full screen, icon/app shortcut
-	 2.1 style the active state:
-   outline: 0;
-   -webkit-tap-highlight-color: rgba(0,0,0,0);
-   -webkit-tap-highlight-color: transparent;
-   -webkit-touch-callout: none;
-   -webkit-user-select: none;
-      -moz-user-select: none;
-       -ms-user-select: none;
-           user-select: none;
-		  2.2 fullscreen - http://www.html5rocks.com/en/mobile/fullscreen/
-		  
-	
-	*/
-	
 	var note,
 		UTILS = {
 			XHR : function (url, content) {
@@ -38,8 +19,8 @@
 			isOnline : function () {
 				return ('onLine' in navigator && !!navigator.onLine);
 			},
-			closeModal : function () {
-				d.body.className = d.body.className.split(' modal-on').join('');
+			closeModal : function (type) {
+				d.body.className = d.body.className.split(' modal-on--' + type).join('');
 			},
 			on : function (el, ev, fn) {
 				if (el.addEventListener) {
@@ -128,7 +109,9 @@
 		UTILS.on(d, 'keyup', function (e) {self.keyBinder.up.call(self, e); })
 			 .on(d, 'keydown', function (e) {self.keyBinder.down.call(self, e); })
 			 .on(d, 'paste', function (e) {self.pasteHandler.call(self, e); })
-			 .on(d.getElementById('btn-email'), 'click', function (e) { self.mail.call(self, e); })
+			 .on(d.getElementById('btn-email'), 'click', function (e) { self.mail.view.call(self, e); })
+			 .on(d.getElementById('mail-submit'), 'click', function (e) { self.mail.send.call(self, e); })
+			 .on(d.getElementById('btn-close'), 'click', function (e) { self.mail.close.call(self, e);  })
 			 .on(d.getElementById('btn-download'), 'click', function (e) {self.download.call(self, e); });
 		
 		return this;
@@ -193,20 +176,19 @@
 	
 	Note.prototype.loadNote = function () {
 		var self = this;
+		if (!w.n) {return this;}
 		if (UTILS.isOnline()) {
 			if (self.localNote === w.n.content) {
 				self.load.local.call(self);
 			} else {
-				d.body.className += ' modal-on';
+				d.body.className += ' modal-on--load';
 				UTILS.on(d.getElementById('btn-local'), 'click', function () {
-					console.log('local');
 					self.load.local.call(self);
-					UTILS.closeModal();
+					UTILS.closeModal('load');
 				})
 					 .on(d.getElementById('btn-db'), 'click', function () {
-					console.log('db');
 						self.load.db.call(self);
-						UTILS.closeModal();
+						UTILS.closeModal('load');
 					});
 			}
 		} else {
@@ -242,26 +224,27 @@
 		}
 	};
 	
-	Note.prototype.mail = function (e) {
-		var self = this,
-			form = d.getElementById('form-email'),
-			field = d.getElementById('form-row-email'),
-			off = function () {
-				d.body.className = d.body.className.split(' app-form-mode').join('');
-			};
-			
-		UTILS.preventDefault(e);
-		e.stopPropagation();
-			
-		if (~d.body.className.indexOf(' app-form-mode')) {
-			UTILS.XHR('/mail', 'content=' + this.extractText(this.sanitise.decode(this.notepad.innerHTML)) + '&form-row-email=' + encodeURI(field.value));
-			off();
-		} else {
-			d.body.className += ' app-form-mode';
-			field.focus();
-			UTILS.on(d, 'click', off);
+	Note.prototype.mail = {
+		view : function () {
+			d.body.className += ' modal-on--mail';
+		},
+		close : function (e) {
+			UTILS.preventDefault(e);
+			e.stopPropagation();
+			UTILS.closeModal('mail');
+		},
+		send : function (e) {
+			var self = this,
+				form = d.getElementById('form-email'),
+				field = d.getElementById('form-row-email');
+			UTILS.preventDefault(e);
+			e.stopPropagation();
+		
+			if (encodeURI(field.value) !== '') {
+				UTILS.XHR('/mail', 'content=' + this.extractText(this.sanitise.decode(this.notepad.innerHTML)) + '&form-row-email=' + encodeURI(field.value));
+				UTILS.closeModal('mail');
+			}
 		}
-		return this;
 	};
 
 	Note.prototype.extractText = function () {

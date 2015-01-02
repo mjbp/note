@@ -4,12 +4,15 @@ block content
 	a(class='icon icon-add', href='/') new
 	div(id='note', contenteditable)
 	div(class='buttons')
-		form#form-email(action='/mail', class='form', tabindex='-1')
-			label(for='form-row-email') Email recipient of this note
-			input(type='email', id='form-row-email', name='form-row-email', placeholder='email address', required)
-			button#btn-email(class='icon icon-send') email
+		button#btn-email(class='icon icon-send') email
 		button#btn-download(class='icon icon-download') download
 	div(class='modal-overlay')
 	div(class='modal')
-		button#btn-local(class='icon icon-local') Load from localStorage
-		button#btn-db(class='icon icon-db') Load from database
+		div(class='modal-load')
+			button#btn-local(class='icon icon-local') Load from localStorage
+			button#btn-db(class='icon icon-db') Load from database
+		form#form-email(action='/mail', class='form', tabindex='-1')
+			button#btn-close(class='icon icon-close') Close
+			label(for='form-row-email') Send this note to
+			input(type='email', id='form-row-email', name='form-row-email', placeholder='recipient@email.com', required)
+			input#mail-submit(type='submit', value='email', class='icon icon-send')

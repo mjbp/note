@@ -5,12 +5,16 @@ html
 		meta(name='viewport', content='width=device-width, height=device-height,  initial-scale=1.0, user-scalable=no, user-scalable=0')
 		meta(name='apple-mobile-web-app-capable', content='yes')
 		meta(name='mobile-web-app-capable', content='yes')
+		link(rel='apple-touch-icon-precomposed', sizes='72x72', href='/icon.png')
+		link(rel='apple-touch-icon-precomposed', sizes='196x196', href='/icon.png')
 		link(rel='shortcut icon', sizes='196x196', href='/icon.png')
 		link(href='//fonts.googleapis.com/css?family=Vollkorn' rel='stylesheet')
 		link(rel='stylesheet', href='/css/style.css')
+		link(rel='manifest', href='manifest.json')
 	body
 		block content
-		script var n = {content: !{JSON.stringify(content)}}
+		- if (content)
+			script var n = {content: !{JSON.stringify(content)}}
 		script(src='/js/libs/filesaver.min.js', async)
 		script(src='/js/libs/blob.min.js', async)
 		script(src='/js/app.js')

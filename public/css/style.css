@@ -5,11 +5,14 @@ body {font:18px/27px 'Vollkorn', serif;min-height:100%;padding:60px 0 1% 0;posit
 body:before {content: '';display:block;position:absolute;width:4px;top:0;left:60px;bottom:0;border:1px solid;border-color:transparent #efe4e4;}
 #note {background: #fff;background: -webkit-gradient(linear, 0 0, 0 100%, from(#d9eaf3), color-stop(4%, #fff)) 0 4px;background: -webkit-linear-gradient(top, #d9eaf3 0%, #fff 8%) 0 4px;background: -moz-linear-gradient(top, #d9eaf3 0%, #fff 8%) 0 4px;background: -ms-linear-gradient(top, #d9eaf3 0%, #fff 8%) 0 4px;background: -o-linear-gradient(top, #d9eaf3 0%, #fff 8%) 0 4px;background: linear-gradient(top, #d9eaf3 0%, #fff 8%) 0 4px;-webkit-background-size: 100% 27px;-moz-background-size: 100% 27px;-ms-background-size: 100% 27px;-o-background-size: 100% 27px;background-size:100% 27px;text-align:left;padding:12px 6% 5%  70px;min-height:88vh;color:#191919;cursor:pointer;outline:0px solid transparent;}
 a,
-button {cursor:pointer;font-size: 1em; margin:0 auto;padding:0;background:transparent;text-decoration:none;color:#000;opacity:0.2;}
+button,
+input[type=submit] {cursor:pointer;font-size: 1em; margin:0 auto;padding:0;background:transparent;text-decoration:none;color:#000;opacity:0.2;}
 a:hover,
-button:hover {opacity:0.35;transition:all 0.2s ease;}
+button:hover,
+input[type=submit]:hover {opacity:0.35;transition:all 0.2s ease;}
 a:focus,
-button:focus {opacity:0.2}
+button:focus,
+input[type=submit]:focus {opacity:0.2}
 img {width:10px;display:block;margin:20px auto;opacity:0.2}
 
 
@@ -19,26 +22,39 @@ img {width:10px;display:block;margin:20px auto;opacity:0.2}
 	background-repeat: no-repeat;position:absolute;top:20px;right:3%;
 }
 .icon-download { background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTkgOWgtNFYzSDl2Nkg1bDcgNyA3LTd6TTUgMTh2MmgxNHYtMkg1eiIvPjwvc3ZnPg==');background-repeat: no-repeat;margin:15px 0 0 0}
-.icon-send {
+.icon-send,
+input[type=submit].icon-send {
 	background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMjAgNEg0Yy0xLjEwNSAwLTEuOTkuODk1LTEuOTkgMkwyIDE4YzAgMS4xMDUuODk1IDIgMiAyaDE2YzEuMTA1IDAgMi0uODk1IDItMlY2YzAtMS4xMDUtLjg5NS0yLTItMnptMCA0bC04IDUtOC01VjZsOCA1IDgtNXYyeiIvPjwvc3ZnPg==');
 	background-repeat: no-repeat;height:24px;padding:4px 0;
 }
+.icon-close {
+	background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTkgNi40MTVMMTcuNTg1IDUgMTIgMTAuNTg1IDYuNDE1IDUgNSA2LjQxNSAxMC41ODUgMTIgNSAxNy41ODUgNi40MTUgMTkgMTIgMTMuNDE1IDE3LjU4NSAxOSAxOSAxNy41ODUgMTMuNDE1IDEyeiIvPjwvc3ZnPg==');
+	background-repeat: no-repeat;height:24px;padding:4px 0;position:fixed;top:5px;right:5px;
+}
 
-.form {width:auto;}
-.form label {width:0;height:0;opacity:0;overflow:hidden; position:absolute;}
-#form-row-email {font:18px 'Vollkorn', serif;height:28px;border:0 none;width:0;background:transparent;border:0; float:left;top:-2px;padding:4px 0;transition:width 100ms linear}
-.app-form-mode #form-row-email {padding:4px 8px;width:200px;}
+.form {display:none; width:auto;background:#fff;padding:28px;text-align:center;}
+.form label {display:inline-block}
+#form-row-email {font:18px 'Vollkorn', serif;height:28px;border:0 none;padding:4px 8px;width:280px;display:inline-block;background:transparent;border:0;border-bottom:1px solid #d9eaf3; top:-2px;mawrgin-left:5px;transition:width 100ms linear}
+#form-row-email:focus {outline:none}
+.form input[type=submit] {display:inline-block;position:relative;top:2px;margin-left:10px;}
 
-.modal-on #note,
-.modal-on:before,
-.modal-on .buttons,
-.modal-on .icon-add {-webkit-filter: blur(2px);-moz-filter: blur(2px);filter: blur(2px)}
-.modal .icon {width:80%;padding:8px 8px 8px 45px;margin-bottom:12px;background:#fff;opacity:1;background-position:left;text-indent:0;text-align:left;height:auto;font:18px/27px 'Vollkorn', serif;overflow:auto;white-space: normal;}
-.modal .icon:before {position:absolute;left:8px;width:32px;display:block;background-size: auto;opacity:0.2;content:'';}
-.modal .icon:hover:before {opacity:0.35}
+[class*='modal-on'] #note,
+[class*='modal-on']:before,
+[class*='modal-on'] .buttons,
+[class*='modal-on'] .icon-add {-webkit-filter: blur(2px);-moz-filter: blur(2px);filter: blur(2px)}
+.modal .icon-local,
+.modal .icon-db {width:80%;padding:8px 8px 8px 45px;margin-bottom:12px;background:#fff;opacity:1;background-position:left;text-indent:0;text-align:left;height:auto;font:18px/27px 'Vollkorn', serif;overflow:auto;white-space: normal;}
+.modal .icon-local:before,
+.modal .icon-db:before {position:absolute;left:8px;width:32px;display:block;background-size: auto;opacity:0.2;content:'';}
+.modal .icon-local:hover:before,
+.modal .icon-db:hover:before {opacity:0.35}
 .icon-db:before {background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMjAgNS40MTVMMTguNTg1IDQgNyAxNS41ODVWOUg1djEwaDEwdi0ySDguNDE1eiIvPjwvc3ZnPg==');background-repeat: no-repeat;height:24px;padding:4px 0;}
 .icon-local:before {background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNOSA1djJoNi41ODVMNCAxOC41ODUgNS40MTUgMjAgMTcgOC40MTVWMTVoMlY1eiIvPjwvc3ZnPg==');background-repeat: no-repeat;height:24px;padding:4px 0;opacity:;}
 .modal-overlay {display: none;z-index:1;width:100%;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);-webkit-filter: none;-moz-filter: none;filter: none}
 .modal {display: none;z-index:1;width:80%;margin:0 auto;position:fixed;top:20%;left:50%;transform:translateX(-50%);-webkit-filter: none;-moz-filter: none;filter: none}
-.modal-on .modal-overlay,
-.modal-on .modal {display:block;}
+.modal-load {display:none}
+[class*='modal-on'] .modal-overlay,
+[class*='modal-on'] .modal{display:block;}
+.modal-on--load .modal-load {display:block;}
+.modal-on--mail .form {display:block;}
+
