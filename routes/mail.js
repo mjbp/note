@@ -6,8 +6,8 @@ var nodemailer = require('nodemailer');
 var transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
-        user: 'mjbpnoteapp@gmail.com',
-        pass: 'sendingsnippetsfromnote'
+        user: 'email@gmail.com', //your gmail address (https://www.google.com/settings/security/lesssecureapps must be enabled)
+        pass: '' //your gmail password
     }
 });
 
@@ -15,7 +15,7 @@ router.post('/', function(req, res) {
 	var referer = req.headers.referer;
 	
 	var mailOptions = {
-		from: 'Note <mjbpnoteapp@gmail.com>',
+		from: 'Note <email@gmail.com>', //must be the same account as above
 		to: req.body['form-row-email'],
 		subject: 'You have been sent a Note',
 		text: req.body.content + '\n\n' + referer,
